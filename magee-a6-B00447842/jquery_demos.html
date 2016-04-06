@@ -1,0 +1,715 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Linux/x86 (vers 11 February 2007), see www.w3.org" />
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+  <title>Assignment 1 - Demo of CSS, jQuery and HTML</title>
+  <style type="text/css">
+/*<![CDATA[*/
+
+
+  body {
+
+        background: #f0f0f0;
+
+        margin: 0;
+
+        padding: 0;
+
+        font: 10px normal Verdana, Arial, Helvetica, sans-serif;
+
+        color: #444;
+
+  }
+
+  .tab_contents {
+
+        position:relative;
+        
+  }
+
+  #opacity_options{display: none}
+
+
+
+  #sprite{
+
+        position:absolute;
+
+        border:1px solid #333;
+
+        background:#f7f5d1;
+
+        padding:2px 5px;
+
+        color:#333;
+
+      }  
+
+      
+  h1 {font-size: 3em; margin: 20px 0;}
+
+  .container {width: 500px; margin: 10px auto; align: center;}
+
+  ul.tabs {
+
+        margin: 0;
+
+        padding: 0;
+
+        float: left;
+
+        list-style: none;
+
+        height: 32px;
+
+        border-bottom: 1px solid #999;
+
+        border-left: 1px solid #999;
+
+        width: 100%;
+
+  }
+
+  ul.tabs li {
+
+        float: left;
+
+        margin: 0;
+
+        padding: 0;
+
+        height: 31px;
+
+        line-height: 31px;
+
+        border: 1px solid #999;
+
+        border-left: none;
+
+        margin-bottom: -1px;
+
+        background: #e0e0e0;
+
+        overflow: hidden;
+
+        position: relative;
+
+  }
+
+  ul.tabs li a {
+
+        text-decoration: none;
+
+        color: #000;
+
+        display: block;
+
+        font-size: 1.2em;
+
+        padding: 0 20px;
+
+        border: 1px solid #fff;
+
+        outline: none;
+
+  }
+
+  ul.tabs li a:hover {
+
+        background: #999966;
+
+  }       
+
+  html ul.tabs li.active, html ul.tabs li.active a:hover  {
+
+        background: #fff;
+
+        border-bottom: 1px solid #fff;
+
+  }
+
+  .tab_container {
+
+        border: 1px solid #999;
+
+        border-top: none;
+
+        clear: both;
+
+        float: left;
+
+        width: 100%;
+
+        background: #fff;
+
+        -moz-border-radius-bottomright: 5px;
+
+        -khtml-border-radius-bottomright: 5px;
+
+        -webkit-border-bottom-right-radius: 5px;
+
+        -moz-border-radius-bottomleft: 5px;
+
+        -khtml-border-radius-bottomleft: 5px;
+
+        -webkit-border-bottom-left-radius: 5px;
+
+  }
+
+  .tab_contents {
+
+        padding: 20px;
+
+        font-size: 1.2em;
+
+  }
+
+  .tab_contents h2 {
+
+        font-weight: normal;
+
+        padding-bottom: 10px;
+
+        border-bottom: 1px solid #ddd;
+
+        font-size: 1.8em;
+		
+		text-align: center;
+
+  }
+
+  .tab_contents p {
+
+        font-weight: normal;
+
+        font-size: 1.3em;
+		
+		text-align: center;
+
+  }
+
+
+
+  .tab_contents h3 {
+
+        font-weight: normal;
+
+        font-size: 1.8em;
+		
+		text-align: center;
+
+  }
+
+
+
+  .tab_contents img {
+        float: center;
+        margin: 0 2px 2px 0;
+        border: 1px solid #ddd;
+        padding: 2px;
+  }
+
+  img {
+
+        cursor: pointer;
+
+  }
+
+
+
+  .accordion {
+
+        margin: 0px;
+
+        padding: 0px;
+
+        width: auto;
+
+  }
+
+
+
+  .scientist_name {
+
+        padding: 6px 10px;
+
+        cursor: pointer;
+
+        background-color:#999966;
+
+        margin:1px;
+
+        font-size: 100%;
+        
+        text-align: center;
+
+  }
+
+
+
+  .scientist_description {
+
+        display: none;
+
+        padding: 5px 5px 5px 5px;
+
+        font-size: 90%;
+
+        border: 1px solid #ddd;
+		
+		text-align: center;
+        
+
+  }
+
+
+
+  .scientist_description > img {
+
+        display: block;
+
+        margin-left: auto;
+
+        margin-right: auto; 
+
+  }
+
+  /*]]>*/
+  </style>
+  <script type="text/javascript" src=
+  "http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js">
+</script>
+  <script type="text/javascript">
+//<![CDATA[
+
+
+  $(document).ready(function() {
+
+  sprite();
+
+        
+        $(".tab_contents").hide(); //Initially hide all the content
+
+                $("ul.tabs li:first").addClass("active").show(); //addClass, show the first tab
+
+                $(".tab_contents:first").show(); //Display the first tabs content
+
+        
+        
+        $("ul.tabs li").click(function() {
+
+                $("ul.tabs li").removeClass("active"); //Remove any class that is active
+
+                $(this).addClass("active"); //place the active class into the tab
+
+                $(".tab_contents").hide(); //Then hide all tab content
+
+                var activeTab = $(this).find("a").attr("href"); //Find the rel attribute value to identify the active tab + content
+
+                $(activeTab).fadeIn(); //Make the content of the selected tab fade in
+
+                return false;
+
+        });
+
+        
+
+        $('#mole1, #mole2, #mole3, #mole4, #mole5, #mole6').click(function(event) { //Select all mole div's then hide
+                        $(this).hide('slow');
+        });
+        
+
+                $('#reset_button').click(function(event) { //resets the game but showing all the <div>'s
+                        $("#mole1, #mole2, #mole3, #mole4, #mole5, #mole6,").show();
+                });
+                        
+
+                $(document).ready(function()  {
+                        $('.scientist_name').click(function()    //Onclick the scientists name <p> calls slideToggle and animates the accordion
+                {
+                        $(this).next().slideToggle(200);        
+                });
+        });
+                
+
+                $('#mole_choice').append('<select>');   // Dynamically created a Select with the values from a span, while adding id tags 
+                        var i = 0;                                                       // to be able to call function on the select items later
+                        $('span').each(function(){
+
+                                $('select').append('<option value="' + $(this).text() +   '" id="' + i + '">' + $(this).text() + '<\/option>' );
+                                i += 1;
+                }); 
+                
+                
+                $("select").change(function () {        //Grabs the selected option and outputs the string, which is then appended with some text
+          var str = "";
+          $("select option:selected").each(function () {
+                str += $(this).text() + " ";
+              });
+          $(".mole_select").text(str).append("Has been chosen, he is very happy you chose him, he dosen't get out much!");
+        })
+        
+                
+
+                <!---------------------------------------------->
+
+                // When any of these images is clicked hide them
+                $('#mole1, #mole2, #mole3, #mole4, #mole5, #mole6').click(function() {
+                        $(this).hide('slow');
+        });
+
+                // This button reveals all the hidden images
+                $('#reset_button').click(function(event) {
+                        $("#mole1, #mole2, #mole3, #mole4, #mole5, #mole6").show();
+                });
+
+                
+                <!------------ Fade buttons for Mole game ---------------------------------->
+
+                $('#fade_button').click(function(event) {
+
+                        $("#mole1, #mole2, #mole3, #mole4, #mole5, #mole6").fadeTo("slow", 0.33);
+
+                });
+
+                
+
+                $('#unfade_button').click(function(event) {
+
+                        $("#mole1, #mole2, #mole3, #mole4, #mole5, #mole6").fadeTo("slow", 1);
+
+                });
+
+                <!---------------- Sprite / Tool tip------------------------------>
+
+                function sprite(){
+        xOffset = 10;
+        yOffset = 20;
+                
+
+                $("img").hover(
+                        function(event){
+                        this.t = this.title;
+                        this.title = "";
+                                $("body").append("<p id='sprite'>" + this.t +"<\/p>");
+                  
+
+                  $("#sprite")
+                    .css("top",(event.pageY - xOffset) + "px")
+                    .css("left",(event.pageX + yOffset) + "px");
+                    },
+
+                  
+                  function(){
+                        this.title = this.t;            
+                        $("#sprite").remove();
+                        });     
+
+                
+                  $("img").mousemove(function(event){
+                   $("#sprite")
+                    .css("top",(event.pageY - xOffset) + "px")
+                    .css("left",(event.pageX + yOffset) + "px");
+                        });     
+        };
+                
+        
+
+        <!-------------- Group of buttons to animate the robber image in the maze-------------------------------->
+
+        $("#right_button").click(function(event){
+
+                $(".thief_div").animate({"left": "+=50px"}, "slow"); //animate the thief div +50px away from the left
+
+        });
+
+
+
+        $("#left_button").click(function(event){
+
+                $(".thief_div").animate({"left": "-=50px"}, "slow");//animate the thief div -50px away from the left
+
+        });
+
+        
+
+        $("#up_button").click(function(event){
+
+                $(".thief_div").animate({"top": "-=50px"}, "slow"); //animate the thief div -50px away from the top
+
+        });
+
+        
+
+        $("#down_button").click(function(event){
+
+                $(".thief_div").animate({"top": "+=50px"}, "slow"); //animate the thief div +50px away from the top
+
+        });
+
+  });
+
+  //]]>
+  </script>
+  <style type="text/css">
+/*<![CDATA[*/
+  div.c2 { position:absolute; top:153px; left:260px; z-index: 1; visibility: show;}
+  div.c1 {text-align: center}
+  /*]]>*/
+  </style>
+</head>
+
+<body>
+  <div id="opacity_options">
+    <!--=============== Opacity options for dynamically generated list ===========================-->
+    <span>Mole 1</span> <span>Mole 2</span> <span>Mole 3</span> <span>Mole 4</span>
+    <span>Mole 5</span> <span>Mole 6</span>
+  </div>
+
+  <div class="container">
+    <h1>jQuery, CSS and HTML demos</h1><!--==========Lists of tabs=================-->
+
+    <ul class="tabs">
+      <li><a href="#tab0">Welcome</a></li>
+
+      <li><a href="#tab1">Hide-Show</a></li>
+
+      <li><a href="#tab2">Accordion</a></li>
+
+      <li><a href="#tab3">Animation</a></li>
+
+    </ul>
+
+    <div class="tab_container">
+      <div id="tab0" class="tab_contents">
+        <h2>Assignment 1 - Interactive Web Computing</h2>
+
+        <div class="c1">
+          <h3>Antony Magee</h3>
+
+          <p>B00447842</p>
+		  
+		  <img title="This looks familiar!" id="logo" src="logo.gif" name="img1" />
+		  <br></br>
+		  <img title="I knew I'd seen it somewhere!" id="devo" src="devo.jpg" name="img1" />
+		  
+        </div>
+      </div>
+
+      <div class="tab_container">
+        <!--============================================================-->
+        <!-- Tab 2 Whack-a-Mole - This tab shows off the Hide and Show -->
+        <!--============================================================-->
+
+        <div class="c1">
+          <div id="tab1" class="tab_contents">
+            <h2>Whack-a-mole</h2>
+			<center>
+            <table id="mole_table" border="0">
+              <tr>
+                <!--==========================================-->
+
+                <td>
+                  <div id="mole1"><img title="The first little mole" id="img1" src=
+                  "mole.jpg" name="img1" /></div>
+                </td><!--==========================================-->
+
+                <td>
+                  <div id="mole2"><img title="The second little mole" id="img2" src=
+                  "mole.jpg" name="img2" /></div>
+                </td>
+              </tr><!--==========================================-->
+
+              <tr>
+                <td>
+                  <div id="mole3"><img title="The third little mole" id="img3" src=
+                  "mole.jpg" name="img3" /></div>
+                </td><!--==========================================-->
+
+                <td>
+                  <div id="mole4"><img title="The forth little mole" id="img4" src=
+                  "mole.jpg" name="img4" /></div>
+                </td>
+              </tr>
+
+              <tr>
+                <!--==========================================-->
+
+                <td>
+                  <div id="mole5"><img title="The fith little mole" id="img5" src=
+                  "mole.jpg" name="img5" /></div>
+                </td><!--==========================================-->
+
+                <td>
+                  <div id="mole6"><img title="The sixth little mole" id="img6" src=
+                  "mole.jpg" name="img6" /></div>
+                </td>
+              </tr>
+            </table>
+			</center>
+            <div class="c1">
+              <!-- Reset images for game button -->
+
+              <form>
+                <input type="button" id="reset_button" value="Reset Game" /><input type=
+                "button" id="fade_button" value="Fade out images" /><input type="button"
+                id="unfade_button" value="Fade In images" />
+              </form>
+            </div><br />
+
+            <div id="mole_choice"></div><br />
+
+            <div class="mole_select"></div><br />
+          </div><!-- content -->
+        </div>
+      </div><!--============================================================-->
+      <!-- Tab 3 Famous Scientists - This tab shows off the accordion -->
+      <!--============================================================-->
+
+      <div id="tab2" class="tab_contents">
+        <h2>Famous Scientists</h2>
+
+        <div class="accordion">
+          <!-- Group of <p> that hold scientist name, image and link to Wikipedia  -->
+
+          <p class="scientist_name">Richard Feynman</p>
+
+          <div class="scientist_description">
+            Richard Phillips Feynman (May 11, 1918  February 15,
+            1988) was an American physicist known for his work in the path integral
+            formulation of quantum mechanics, the theory of quantum electrodynamics and
+            the physics of the superfluidity of supercooled liquid helium, as well as in
+            particle physics (he proposed the parton model). For his contributions to the
+            development of quantum electrodynamics, Feynman, jointly with Julian
+            Schwinger and Sin-Itiro Tomonaga, received the Nobel Prize in Physics in
+            1965. <img title="Richard Feynman" src="richard.jpg" />
+
+            <div class="c1">
+              <a href="http://en.wikipedia.org/wiki/Richard_Feynman" target=
+              "_blank">Further Reading</a>
+            </div>
+          </div><!--==========================================-->
+
+          <p class="scientist_name">Carl Sagan</p>
+
+          <div class="scientist_description">
+            Carl Edward Sagan (November 9, 1934  December 20, 1996)
+            was an American astronomer, astrophysicist, cosmologist, author, science
+            popularizer, and science communicator in the space and natural sciences.
+            During his lifetime, he published more than 600 scientific papers and popular
+            articles and was author, co-author, or editor of more than 20 books. In his
+            works, he advocated skeptical inquiry and the scientific method. <img title=
+            "Carl Sagan" src="carl.jpg" />
+
+            <div class="c1">
+              <a href="http://en.wikipedia.org/wiki/Carl_sagan" target="_blank">Further
+              Reading</a>
+            </div>
+          </div><!--==========================================-->
+
+          <p class="scientist_name">Charles Darwin</p>
+
+          <div class="scientist_description">
+            Charles Robert Darwin (12 February 1809  19 April 1882)
+            was an English naturalist. He established that all species of life have
+            descended over time from common ancestry, and proposed the scientific theory
+            that this branching pattern of evolution resulted from a process that he
+            called natural selection. He published his theory with compelling evidence
+            for evolution in his 1859 book On the Origin of Species, overcoming
+            scientific rejection of earlier concepts of transmutation of species.By the
+            1870s the scientific community and much of the general public accepted
+            evolution as a fact. However, many favoured competing explanations and it was
+            not until the emergence of the modern evolutionary synthesis from the 1930s
+            to the 1950s that a broad consensus developed that natural selection was the
+            basic mechanism of evolution. In modified form, Darwin's scientific discovery
+            is the unifying theory of the life sciences, explaining the diversity of
+            life. <img title="Charles Darwin" src="darwin2.png" />
+
+            <div class="c1">
+              <a href="http://en.wikipedia.org/wiki/Charles_Darwin" target=
+              "_blank">Further Reading</a>
+            </div>
+          </div><!--==========================================-->
+
+          <p class="scientist_name">Isaac Newton</p>
+
+          <div class="scientist_description">
+            Sir Isaac Newton PRS (25 December 1642  20 March 1727
+            [NS: 4 January 1643  31 March 1727])[1] was an English
+            physicist, mathematician, astronomer, natural philosopher, alchemist, and
+            theologian, has been "considered by many to be the greatest and most
+            influential scientist who ever lived."[7] His monograph Philosophie Naturalis
+            Principia Mathematica, published in 1687, lays the foundations for most of
+            classical mechanics. In this work, Newton described universal gravitation and
+            the three laws of motion, which dominated the scientific view of the physical
+            universe for the next three centuries. Newton showed that the motions of
+            objects on Earth and of celestial bodies are governed by the same set of
+            natural laws, by demonstrating the consistency between Kepler's laws of
+            planetary motion and his theory of gravitation, thus removing the last doubts
+            about heliocentrism and advancing the Scientific Revolution. <img title=
+            "Sir Isacc Newton" src="newton.png" />
+
+            <div class="c1">
+              <a href="http://en.wikipedia.org/wiki/Isaac_Newton" target="_blank">Further
+              Reading</a>
+            </div>
+          </div><!--==========================================-->
+
+          <p class="scientist_name">Charles Babbage</p>
+			
+          <div class="scientist_description">
+            Charles Babbage, FRS (26 December 1791 18 October 1871)
+            was an English mathematician, philosopher, inventor and mechanical engineer
+            who originated the concept of a programmable computer. Considered a "father
+            of the computer", Babbage is credited with inventing the first mechanical
+            computer that eventually led to more complex designs. Parts of his
+            uncompleted mechanisms are on display in the London Science Museum. In 1991,
+            a perfectly functioning difference engine was constructed from Babbage's
+            original plans. Built to tolerances achievable in the 19th century, the
+            success of the finished engine indicated that Babbage's machine would have
+            worked. Nine years later, the Science Museum completed the printer Babbage
+            had designed for the difference engine, an astonishingly complex device for
+            the 19th century. <img title="Charles Babbage" src="babbage.png" />
+
+            <div class="c1">
+			
+              <a href="http://en.wikipedia.org/wiki/Charles_Babbage" target=
+              "_blank">Further Reading</a>
+            </div>
+          </div>
+        </div><!-- End of accordion div -->
+      </div><!--===============================================================-->
+      <!-- Tab 3 Animations - This tab shows off the animation I created -->
+      <!--===============================================================-->
+
+      <div id="tab3" class="tab_contents">
+        <div class="c1">
+          <h2>Animation</h2>
+        </div>
+
+        <p>After having robbed the public blind with your banking ways try and make it
+        back home with your plunder!</p><img title="Maze of life" src="maze.png" /> 
+        <!-- Control buttons for maze game  -->
+
+        <div class="c1">
+          <form>
+            <input type="button" id="up_button" value="Up" /><br />
+            <input type="button" id="left_button" value="Left" /><input type="button" id=
+            "right_button" value="Right" /><br />
+            <input type="button" id="down_button" value="Down" />
+          </form>
+        </div><!-- Thief image Div, Style intergrated -->
+
+        <div class="thief_div c2"><img src="thief.png" /></div>
+
+        
+      </div>
+    </div>
+  </div>
+</body>
+</html>
